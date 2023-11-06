@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 const Form = ({
   handlerSubmit,
 }: {
-  handlerSubmit: ({ name: string, zone: string }) => void;
+  handlerSubmit: ({ name, zone }: { name: string; zone: string }) => void;
 }) => {
   const [name, setName] = useState<string>("");
   const [zone, setZone] = useState<string>("");
@@ -12,7 +12,9 @@ const Form = ({
 
   const onHandlerSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (name !== "" && zone !== "") handlerSubmit({ name, zone });
+    if (name !== "" && zone !== "") {
+      handlerSubmit({ name, zone });
+    }
 
     if (componentInputName.current) {
       componentInputName.current.value = "";
@@ -31,7 +33,7 @@ const Form = ({
         <input
           type="text"
           id="zone-name"
-          defaultValue={name}
+          onChange={(event) => setName(event.target.value)}
           ref={componentInputName}
         />
       </div>
@@ -40,11 +42,11 @@ const Form = ({
         <input
           type="text"
           id="time-zone"
-          defaultValue={zone}
+          onChange={(event) => setZone(event.target.value)}
           ref={componentInputZone}
         />
       </div>
-      <input type="button" value="Добавить" />
+      <input type="submit" value="Добавить" />
     </form>
   );
 };
