@@ -1,14 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 type Props = {
   name: string;
   timezone: number;
+  handlerClick: (elementDelete: string) => void;
 };
 
-const Clock = ({ name, timezone }: Props): JSX.Element => {
+const Clock = ({ name, timezone, handlerClick }: Props): JSX.Element => {
   const [time, setTime] = useState<Date>(new Date());
+  const [elementDelete, setElementDelete] = useState<string>("");
+  const componentDelete = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    if (componentDelete.current)
+      setElementDelete(JSON.stringify(componentDelete.current?.dataset.name));
     const interval = setInterval(() => {
       setTime(new Date());
     }, 1000);
@@ -69,6 +74,12 @@ const Clock = ({ name, timezone }: Props): JSX.Element => {
             }}
           ></div>
         </div>
+        <div
+          className="delete"
+          onClick={() => handlerClick(elementDelete)}
+          data-name={name}
+          ref={componentDelete}
+        ></div>
       </div>
       <p className="digital-clock">
         {formatTime(getTimeWithTimezone(time, timezone))}

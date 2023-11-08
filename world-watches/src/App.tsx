@@ -1,25 +1,31 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import Form from "./components/Form";
 import Clock from "./components/Clock";
+import listCiti from "./assets/listCiti";
 
 function App() {
   const [watches, setWatches] = useState<{ name: string; zone: string }[]>([]);
 
   const handlerSubmit = ({ name, zone }: { name: string; zone: string }) => {
     setWatches([...watches, { name, zone }]);
-    console.log(watches);
+  };
+  const handlerClick = (elementDelete: string) => {
+    const updateWatches = watches.filter(
+      (elem) => elem.name !== JSON.parse(elementDelete)
+    );
+    setWatches(updateWatches);
   };
 
   return (
     <>
       <ul className="names-zone">
-        {["New York", "Moscow", "London", "Tokyo"].map((elem, index) => {
+        {listCiti.map((elem, index) => {
           return (
-            <>
-              <li key={index}>{elem}</li>
+            <React.Fragment key={index}>
+              <li>{elem}</li>
               <br></br>
-            </>
+            </React.Fragment>
           );
         })}
       </ul>
@@ -28,7 +34,11 @@ function App() {
         {watches.map((watch, index) => {
           return (
             <li className="watch" key={index}>
-              <Clock name={watch.name} timezone={parseInt(watch.zone)} />
+              <Clock
+                name={watch.name}
+                timezone={parseInt(watch.zone)}
+                handlerClick={handlerClick}
+              />
             </li>
           );
         })}

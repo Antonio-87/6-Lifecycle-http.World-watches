@@ -46,7 +46,7 @@ const Form = ({
           ref={componentInputZone}
         />
       </div>
-      <input type="submit" value="Добавить" />
+      <input type="submit" id="input-submit" value="Добавить" />
     </form>
   );
 };
