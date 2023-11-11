@@ -8,12 +8,9 @@ type Props = {
 
 const Clock = ({ name, timezone, handlerClick }: Props): JSX.Element => {
   const [time, setTime] = useState<Date>(new Date());
-  const [elementDelete, setElementDelete] = useState<string>("");
   const componentDelete = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (componentDelete.current)
-      setElementDelete(JSON.stringify(componentDelete.current?.dataset.name));
     const interval = setInterval(() => {
       setTime(new Date());
     }, 1000);
@@ -76,7 +73,9 @@ const Clock = ({ name, timezone, handlerClick }: Props): JSX.Element => {
         </div>
         <div
           className="delete"
-          onClick={() => handlerClick(elementDelete)}
+          onClick={() =>
+            handlerClick(JSON.stringify(componentDelete.current?.dataset.name))
+          }
           data-name={name}
           ref={componentDelete}
         ></div>
